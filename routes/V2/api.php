@@ -35,7 +35,7 @@ Route::middleware('auth:api')->group(function () {
     });
 
 
-    Route::post('v2/logout',[AuthGoogleController::class,'logout']);
+    Route::post('v2/logout',[AuthController::class,'logout']);
     Route::get('/secret',[PasswordController::class,'password'])->middleware('password.confirm');
 });
 
@@ -50,4 +50,5 @@ Route::prefix('shop')->group(function () {
 Route::get('auth/google',[AuthGoogleController::class,'redirect'])->middleware('web');
 Route::get('auth/google/callback',[AuthGoogleController::class,'callback']);
 Route::post('v2/register',[AuthController::class,'register']);
+Route::post('v2/login',[AuthController::class,'login']);
 

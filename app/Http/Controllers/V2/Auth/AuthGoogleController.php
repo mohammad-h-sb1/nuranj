@@ -49,11 +49,5 @@ class AuthGoogleController extends Controller
         };
     }
 
-    public function logout()
-    {
-        $user = User::query()->where('id', auth()->user()->id);
-        $user->update([
-            'api_token' => null
-        ]);
-    }
+
 }
