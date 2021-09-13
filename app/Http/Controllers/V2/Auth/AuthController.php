@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\V2\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Functions;
 use App\Http\Resources\User\UserResource;
 use App\Models\User;
 use App\Notifications\LoginToAppNotification;
@@ -69,6 +70,11 @@ class AuthController extends Controller
             ],403);
         }
         if (auth()->user()->hasTwoFactorAuthEnable()){
+            $type=auth()->user()->type;
+            $userMobile=auth()->user()->mobile;
+            $mobile=$userMobile;
+            $user=auth()->user();
+            Functions::storeTwoFactor($type,$userMobile,$mobile,$user);
             if (auth()->user()->email !==  null){
                 $user=auth()->user();
                 $user->notify(new LoginToAppNotification());

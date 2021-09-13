@@ -2,14 +2,20 @@
 
 namespace App\Http\Controllers\V2\Dashboard\AdminShop;
 
+use App\Container;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Functions;
+use App\Http\Resources\User\ProfileResource;
 use App\Http\Resources\User\UserResource;
+use App\Models\Profile;
 use App\Models\User;
 use App\Models\V2\ActiveCode;
 use App\Notifications\LoginUserNotification;
+use App\Services\FooService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
 class ProfileController extends Controller
@@ -21,7 +27,13 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        //
+        $fooService=new FooService();
+        $fooService->dsSomething();
+        $container=new Container();
+        $container->bind('fooService',function (){
+            return new FooService();
+        });
+        dd($container->resolve('fooService'));
     }
 
     /**
@@ -59,12 +71,25 @@ class ProfileController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id)
     {
-        //
+        $profile=Profile::query()->find($id);
+        $auth=$this->authorize('edit',$profile);
+        if ($auth){
+            return response()->json([
+                'status'=>'ok',
+                'data'=>new ProfileResource($profile)
+            ]);
+        }
+        else{
+            return response()->json([
+                'status'=>'Error',
+                'massager'=>'شما دستریسی ندارید'
+            ],403);
+        }
     }
 
     /**
@@ -110,28 +135,13 @@ class ProfileController extends Controller
     {
         $validData = $this->validate($request, [
             'type' => 'required|in:sms,no',
-            'mobile'=>['required_unless:type,no' ,Rule::unique('user','mobile')->ignore($request->user()->id)]
+            'mobile'=>['required_unless:type,no' ,Rule::unique('users','mobile')->ignore($request->user()->id)]
         ]);
-        if ($validData['type'] == 'sms'){
-            if ($request->user()->mobile !==$validData['mobile']){
-                $code=ActiveCode::generateCode($request->user());
-//                $request->session()->flash('mobile',$validData['mobile']);
-                //send sms
-                $request->user()->notify(new LoginUserNotification($code,$validData['mobile']));
-            }else{
-                $user = User::query()->where('id', auth()->user()->id)->first();
-                $user->update([
-                    'two_factory_type' => 'sms'
-                ]);
-            }
-        }
-        if ($validData['type'] == 'no') {
-            $user = User::query()->where('id', auth()->user()->id)->first();
-            $user->update([
-                'two_factory_type' => 'of'
-            ]);
-
-        }
+        $type=$validData['type'];
+        $userMobile=\auth()->user()->mobile;
+        $user=\auth()->user();
+        $mobile=$validData['mobile'];
+        Functions::storeTwoFactor($type,$userMobile,$mobile,$user,);
         return response()->json([
             'status' => 'ok',
             'data' => [
@@ -146,18 +156,12 @@ class ProfileController extends Controller
 //    }
 
     public function postTwoFactorMobile(Request $request)
-    {
+    {;
         $validData = $this->validate($request, [
             'token' => 'required',
             'mobile' => 'required',
         ]);
-//        if ($request->session()->has('mobile')){
-//            dd('dcs');
-//            return response()->json([
-//                'status'=>'Error',
-//                'massager'=>'شما دسترسی ندارید'
-//            ],403);
-//        }
+
         $status=ActiveCode::verifyCode($request->token,auth()->user());
         if ($status){
             $request->user()->activeCode()->delete();

@@ -5,6 +5,7 @@ use App\Http\Controllers\V2\Auth\AuthController;
 use App\Http\Controllers\V2\Auth\AuthGoogleController;
 use App\Http\Controllers\V2\Auth\PasswordController;
 use App\Http\Controllers\V2\Dashboard\AdminShop\ProfileController as DashboardAdminShopProfile;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\V2\Front\Admin\ShopController as FrontAdminShop;
 
@@ -17,7 +18,7 @@ Route::middleware('auth:api')->group(function () {
             //profile
             Route::prefix('profile')->group(function (){
                 Route::get('/',[DashboardAdminShopProfile::class,'index']);
-
+                Route::get('edit/{id}',[DashboardAdminShopProfile::class,'edit']);
 
                 //این روت های برای اینکه کاربر در پروفایلش بگه دوست داره دومرحله ای باشه یا نه
                 Route::prefix('/two/factor')->group(function (){
@@ -36,7 +37,6 @@ Route::middleware('auth:api')->group(function () {
 
 
     Route::post('v2/logout',[AuthController::class,'logout']);
-    Route::get('/secret',[PasswordController::class,'password'])->middleware('password.confirm');
 });
 
 
