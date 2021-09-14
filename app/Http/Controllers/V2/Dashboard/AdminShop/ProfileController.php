@@ -20,6 +20,12 @@ use Illuminate\Validation\Rule;
 
 class ProfileController extends Controller
 {
+
+    public function __construct()
+    {
+//        $this->middleware('can:edit-profile-shop,user')->only(['edit']);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -76,8 +82,8 @@ class ProfileController extends Controller
      */
     public function edit(int $id)
     {
-        $profile=Profile::query()->find($id);
-        $auth=$this->authorize('edit',$profile);
+        $profile=Profile::query()->where('id',$id)->where('user_id',auth()->user()->id)->first();
+        $auth=$this->authorize('edit-profile-shop',$profile);
         if ($auth){
             return response()->json([
                 'status'=>'ok',

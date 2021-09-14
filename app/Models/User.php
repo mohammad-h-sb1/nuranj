@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Models\V2\ActiveCode;
+use App\Models\V2\Permission;
+use App\Models\V2\Role;
 use App\Models\V2\Shop;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -142,5 +144,25 @@ class User extends Authenticatable
     public function hasTwoFactorAuthEnable()
     {
         return $this->two_factory_type !== 'of';
+    }
+
+    public function permissions()
+    {
+        return $this->belongsToMany(Permission::class);
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+    public function hasPermission($permission)
+    {
+        return $this->permissions->contains('name',$permission->name) || $this->hasRole($permission->roles);
+    }
+
+    private function hasRole($roles)
+    {
+       return !! $roles->intersect($this->roles)->all();
     }
 }
