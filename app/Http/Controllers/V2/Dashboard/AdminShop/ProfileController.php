@@ -71,7 +71,11 @@ class ProfileController extends Controller
      */
     public function show($id)
     {
-        //
+       $profile=Profile::query()->whereId($id)->first();
+       return response()->json([
+           'status'=>'ok',
+           'data'=>new ProfileResource($profile)
+       ]);
     }
 
     /**

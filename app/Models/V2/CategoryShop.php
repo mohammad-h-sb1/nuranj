@@ -6,19 +6,19 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Shop extends Model
+class CategoryShop extends Model
 {
     use HasFactory;
-
     protected $guarded=[];
+
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function category()
+    public function shops()
     {
-        return $this->belongsTo(CategoryShop::class);
+        return  $this->hasMany(Shop::class);
     }
 }

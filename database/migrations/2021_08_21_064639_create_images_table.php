@@ -19,9 +19,12 @@ class CreateImagesTable extends Migration
             $table->unsignedBigInteger('project_id')->nullable();
             $table->unsignedBigInteger('work_team_id')->nullable();
             $table->unsignedBigInteger('pro_id')->nullable();
+            $table->unsignedBigInteger('page_id')->nullable();
+            $table->unsignedBigInteger('ticket_id')->nullable();
             $table->string('url');
             $table->boolean('status')->default(0);
             $table->timestamps();
+
 
             $table->foreign('work_team_id')
                 ->references('id')
@@ -46,6 +49,16 @@ class CreateImagesTable extends Migration
                 ->on('projects')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
+            //            $table->foreign('page_id')
+//                ->references('id')
+//                ->on('pages')
+//                ->onUpdate('cascade')
+//                ->onDelete('cascade');
+//            $table->foreign('ticket_id')
+//                ->references('id')
+//                ->on('tickets')
+//                ->onUpdate('cascade')
+//                ->onDelete('cascade');
 
         });
     }

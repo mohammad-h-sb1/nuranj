@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\V2\ActiveCode;
+use App\Models\V2\CategoryShop;
 use App\Models\V2\Permission;
 use App\Models\V2\Role;
 use App\Models\V2\Shop;
@@ -86,11 +87,6 @@ class User extends Authenticatable
         return $this->hasMany(CustomerClubLog::class);
     }
 
-    public function categories()
-    {
-        return $this->hasMany(Category::class);
-    }
-
     public function workTeams()
     {
         return $this->hasMany(WorkTeam::class);
@@ -131,11 +127,6 @@ class User extends Authenticatable
         return $this->hasMany(Answer::class);
     }
 
-    public function shops()
-    {
-        return $this->hasMany(Shop::class);
-    }
-
     public function activeCode()
     {
         return $this->hasMany(ActiveCode::class);
@@ -164,5 +155,15 @@ class User extends Authenticatable
     private function hasRole($roles)
     {
        return !! $roles->intersect($this->roles)->all();
+    }
+
+    public function categoryShops()
+    {
+        return $this->hasMany(CategoryShop::class);
+    }
+
+    public function shops()
+    {
+        return $this->hasMany(Shop::class);
     }
 }

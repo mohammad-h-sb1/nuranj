@@ -18,6 +18,7 @@ class CreatePermissionsAndRolesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('label')->nullable();
+            $table->enum('type',\App\Models\User::TYPES);
             $table->timestamps();
         });
 
@@ -36,6 +37,8 @@ class CreatePermissionsAndRolesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('label')->nullable();
+            $table->enum('type',\App\Models\User::TYPES);
+
             $table->timestamps();
         });
 
