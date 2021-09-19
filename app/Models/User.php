@@ -5,10 +5,12 @@ namespace App\Models;
 use App\Models\V2\ActiveCode;
 use App\Models\V2\CategoryShop;
 use App\Models\V2\Permission;
+use App\Models\V2\Product;
 use App\Models\V2\Role;
 use App\Models\V2\Shop;
+use App\Models\V2\ShopCategory;
 use App\Models\V2\ShopMeta;
-use App\V2\Models\ShopCategory;
+use App\Models\V2\ShopSting;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -180,5 +182,15 @@ class User extends Authenticatable
     public function ShopCategories()
     {
         return $this->hasMany(ShopCategory::class);
+    }
+
+    public function ShopStings()
+    {
+        return $this->hasMany(ShopSting::class);
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class,'user_id','user_id');
     }
 }

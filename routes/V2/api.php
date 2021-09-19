@@ -8,10 +8,15 @@ use App\Http\Controllers\V2\Dashboard\Admin\CategoryShopController as DashboardA
 use App\Http\Controllers\V2\Dashboard\Admin\PermissionController as DashboardAdminPermission;
 use App\Http\Controllers\V2\Dashboard\Admin\PermissionUserController as DashboardAdminPermissionUser;
 use App\Http\Controllers\V2\Dashboard\Admin\RoleController as DashboardAdminRole;
+use App\Http\Controllers\V2\Dashboard\AdminShop\ProductController as DashboardAdminShopProduct;
 use App\Http\Controllers\V2\Dashboard\AdminShop\ShopCategoryController as DashboardAdminShopCategory;
 use App\Http\Controllers\V2\Dashboard\AdminShop\ShopController as DashboardAdminShop;
 use App\Http\Controllers\V2\Dashboard\AdminShop\ProfileController as DashboardAdminShopProfile;
 use App\Http\Controllers\V2\Dashboard\AdminShop\ShopMetaController as DashboardAdminShopMetaShop;
+use App\Http\Controllers\V2\Dashboard\Admin\ShopStingController as DashboardAdminShopSting;
+use App\Http\Controllers\V2\Dashboard\AdminShop\ShopStingController;
+use App\Http\Controllers\V2\Dashboard\AdminShop\ShopStingTypeController as DashboardAdminShopStingType;
+use \App\Http\Controllers\V2\Dashboard\AdminShop\ShopStingMetaValueController as DashboardAdminShopStingTypeMetaValue;
 use App\Http\Controllers\V2\Front\Front\ShopController;
 use App\Http\Controllers\V2\Dashboard\Admin\ShopController as DashboardAdminShops;
 use Illuminate\Support\Facades\Gate;
@@ -65,6 +70,15 @@ Route::middleware('auth:api')->group(function () {
                 Route::post('/status/{id}',[DashboardAdminShops::class,'status'])->middleware('can:status_shop,user');
             });
 
+            Route::prefix('shop/sting')->group(function (){
+                Route::get('/',[DashboardAdminShopSting::class,'index'])->middleware('can:index_shop_sting_admin,user');
+                Route::post('/store',[DashboardAdminShopSting::class,'store'])->middleware('can:store_shop_sting_admin,user');
+                Route::get('/show/{shopSting}',[DashboardAdminShopSting::class,'show'])->middleware('can:show_shop_sting_admin,user');
+                Route::get('/edit/{shopSting}',[DashboardAdminShopSting::class,'edit'])->middleware('can:edit_shop_sting_admin,user');
+                Route::put('/update/{shopSting}',[DashboardAdminShopSting::class,'update'])->middleware('can:delete_shop_sting_admin,user');
+                Route::delete('/delete/{shopSting}',[DashboardAdminShopSting::class,'destroy'])->middleware('can:store_shop_sting_admin,user');
+            });
+
         });
         //adminShop
         Route::prefix('admin/shop')->group(function (){
@@ -95,6 +109,42 @@ Route::middleware('auth:api')->group(function () {
                 Route::post('/status/{id}',[DashboardAdminShopCategory::class,'status'])->middleware('can:status_shop_category_admin_shop,user');
                 Route::post('/status/menu/{id}',[DashboardAdminShopCategory::class,'statusMenu'])->middleware('can:status_shop_category_admin_shop,user');
             });
+            //shop sting
+            Route::prefix('shop/sting')->group(function (){
+                Route::get('/',[ShopStingController::class,'index'])->middleware('can:index_shop_sting_admin_shop,user');
+                Route::get('/show/{id}',[ShopStingController::class,'show'])->middleware('can:shop_shop_sting_admin_shop,user');
+            });
+            //shop sting type
+            Route::prefix('shop/sting/type')->group(function (){
+                Route::get('/',[DashboardAdminShopStingType::class,'index'])->middleware('can:index_shop_sting_type_admin_shop,user');
+                Route::post('/store',[DashboardAdminShopStingType::class,'store'])->middleware('can:store_shop_sting_type_admin_shop,user');
+                Route::get('/show/{shopStingType}',[DashboardAdminShopStingType::class,'show'])->middleware('can:show_shop_sting_type_admin_shop,user');
+                Route::get('/edit/{shopStingType}',[DashboardAdminShopStingType::class,'edit'])->middleware('can:edit_shop_sting_type_admin_shop,user');
+                Route::put('/update/{shopStingType}',[DashboardAdminShopStingType::class,'update'])->middleware('can:update_shop_sting_type_admin_shop,user');
+                Route::delete('/delete/{shopStingType}',[DashboardAdminShopStingType::class,'destroy'])->middleware('can:delete_shop_sting_type_admin_shop,user');
+            });
+            //shop sting type meta value
+            Route::prefix('shop/sting/type/meta')->group(function (){
+                Route::get('/',[DashboardAdminShopStingTypeMetaValue::class,'index'])->middleware('can:index_shop_sting_type_meta_value_admin_shop,user');
+                Route::post('/store',[DashboardAdminShopStingTypeMetaValue::class,'store'])->middleware('can:store_shop_sting_type_meta_value_admin_shop,user');
+                Route::get('/show/{shopStingMetaValue}',[DashboardAdminShopStingTypeMetaValue::class,'show'])->middleware('can:show_shop_sting_type_meta_value_admin_shop,user');
+                Route::get('/edit/{shopStingMetaValue}',[DashboardAdminShopStingTypeMetaValue::class,'edit'])->middleware('can:edit_shop_sting_type_meta_value_admin_shop,user');
+                Route::put('/update/{shopStingMetaValue}',[DashboardAdminShopStingTypeMetaValue::class,'update'])->middleware('can:update_shop_sting_type_meta_value_admin_shop,user');
+                Route::delete('/delete/{shopStingMetaValue}',[DashboardAdminShopStingTypeMetaValue::class,'destroy'])->middleware('can:delete_shop_sting_type_meta_value_admin_shop,user');
+            });
+
+            //product
+            Route::prefix('product')->group(function (){
+                Route::get('/',[DashboardAdminShopProduct::class,'index'])->middleware('can:index_product_admin_shop,user');
+                Route::post('/store',[DashboardAdminShopProduct::class,'store'])->middleware('can:store_product_admin_shop,user');
+                Route::get('/show/{product}',[DashboardAdminShopProduct::class,'show'])->middleware('can:show_product_admin_shop,user');
+                Route::get('/edit/{product}',[DashboardAdminShopProduct::class,'edit'])->middleware('can:edit_product_admin_shop,user');
+                Route::put('/update/{id}',[DashboardAdminShopProduct::class,'update'])->middleware('can:update_product_admin_shop,user');
+                Route::delete('/delete/{id}',[DashboardAdminShopProduct::class,'destroy'])->middleware('can:delete_product_admin_shop,user');
+                Route::post('/status/{id}',[DashboardAdminShopProduct::class,'status'])->middleware('can:status_product_admin_shop,user');
+            });
+
+            //product meta
 
 
 

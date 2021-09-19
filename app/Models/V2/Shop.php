@@ -3,7 +3,7 @@
 namespace App\Models\V2;
 
 use App\Models\User;
-use App\V2\Models\ShopCategory;
+use App\Models\V2\ShopCategory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -36,5 +36,20 @@ class Shop extends Model
     public function shopCategories()
     {
         return $this->hasMany(ShopCategory::class);
+    }
+
+    public function shopStings()
+    {
+        return $this->hasMany(ShopSting::class);
+    }
+
+    public function ShopStingTypes()
+    {
+        return $this->hasMany(ShopStingType::class);
+    }
+
+    public function Products()
+    {
+        return $this->hasMany(Product::class);
     }
 }

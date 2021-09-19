@@ -170,7 +170,41 @@ class AdminSeeder extends Seeder
                 'name'=>'status_shop',
                 'label'=>'وضعیت_یک_فروشگاه',
                 'type'=>'admin'
-            ]
+            ],
+
+            //admin stingShop
+            [
+                'name'=>'index_shop_sting_admin',
+                'label'=>'دیدن همه ستینگ ها',
+                'type'=>'admin'
+            ],
+            [
+                'name'=>'store_shop_sting_admin',
+                'label'=>'ایجاد ستینگ',
+                'type'=>'admin'
+            ],
+            [
+                'name'=>'show_shop_sting_admin',
+                'label'=>'دیدن ستینگ',
+                'type'=>'admin_shop'
+            ],
+            [
+                'name'=>'edit_shop_sting_admin',
+                'label'=>'ویرایش ستینگ',
+                'type'=>'admin'
+            ],
+            [
+                'name'=>'update_shop_sting_admin',
+                'label'=>'اپدیت ستینگ',
+                'type'=>'admin'
+            ],
+            [
+                'name'=>'delete_shop_sting_admin',
+                'label'=>'حذف ستینگ',
+                'type'=>'admin'
+            ],
+
+
         ];
         foreach ($Permissions as $Permission){
             Permission::updateOrCreate(

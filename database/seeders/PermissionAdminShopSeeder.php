@@ -76,6 +76,122 @@ class PermissionAdminShopSeeder extends Seeder
                 'type'=>'admin_shop'
             ],
 
+            //adminShop stingShop
+            [
+                'name'=>'index_shop_sting_admin_shop',
+                'label'=>'دیدن همه ستنیگ ها',
+                'type'=>'admin_shop'
+            ],
+            [
+                'name'=>'shop_shop_sting_admin_shop',
+                'label'=>'دیدن  ستنیگ',
+                'type'=>'admin_shop'
+            ],
+
+            //adminShop Sting Shop type
+            [
+                'name'=>'index_shop_sting_type_admin_shop',
+                'label'=>'دیدن همه ستینگ تایپ ها',
+                'type'=>'admin_shop'
+            ],
+            [
+                'name'=>'store_shop_sting_type_admin_shop',
+                'label'=>'ایجاد  ستینگ تایپ',
+                'type'=>'admin_shop'
+            ],
+            [
+                'name'=>'show_shop_sting_type_admin_shop',
+                'label'=>'دیدن یک  ستینگ تایپ',
+                'type'=>'admin_shop'
+            ],
+            [
+                'name'=>'edit_shop_sting_type_admin_shop',
+                'label'=>'ویرایش  ستینگ تایپ',
+                'type'=>'admin_shop'
+            ],
+            [
+                'name'=>'update_shop_sting_type_admin_shop',
+                'label'=>'اپدیت  ستینگ تایپ',
+                'type'=>'admin_shop'
+            ],
+            [
+                'name'=>'delete_shop_sting_type_admin_shop',
+                'label'=>'حذف  ستینگ تایپ',
+                'type'=>'admin_shop'
+            ],
+
+            //adminShop sting Shop type meta
+            [
+                'name'=>'index_shop_sting_type_meta_value_admin_shop',
+                'label'=>'دیدن همه ستینگ تایپ ولیو',
+                'type'=>'admin_shop'
+            ],
+            [
+                'name'=>'store_shop_sting_type_meta_value_admin_shop',
+                'label'=>'ایجاد ستینگ تایپ ولیو',
+                'type'=>'admin_shop'
+            ],
+            [
+                'name'=>'show_shop_sting_type_meta_value_admin_shop',
+                'label'=>'دیدن یک ستینگ تایپ ولیو',
+                'type'=>'admin_shop'
+            ],
+            [
+                'name'=>'edit_shop_sting_type_meta_value_admin_shop',
+                'label'=>'ویرایش ستینگ تایپ ولیو',
+                'type'=>'admin_shop'
+            ],
+            [
+                'name'=>'update_shop_sting_type_meta_value_admin_shop',
+                'label'=>'اپدیت ستینگ تایپ ولیو',
+                'type'=>'admin_shop'
+            ],
+            [
+                'name'=>'delete_shop_sting_type_meta_value_admin_shop',
+                'label'=>'حذف  ستینگ تایپ',
+                'type'=>'admin_shop'
+            ],
+
+            //adminShop product
+            [
+                'name'=>'index_product_admin_shop',
+                'label'=>'دیدن همه محصولات',
+                'type'=>'admin_shop'
+            ],
+            [
+                'name'=>'store_product_admin_shop',
+                'label'=>'ایجاد محصول',
+                'type'=>'admin_shop'
+            ],
+            [
+                'name'=>'show_product_admin_shop',
+                'label'=>'دیدن محصول',
+                'type'=>'admin_shop'
+            ],
+            [
+                'name'=>'edit_product_admin_shop',
+                'label'=>'ویرایش محصول',
+                'type'=>'admin_shop'
+            ],
+            [
+                'name'=>'update_product_admin_shop',
+                'label'=>'اپدیت محصول',
+                'type'=>'admin_shop'
+            ],
+            [
+                'name'=>'delete_product_admin_shop',
+                'label'=>'حذف  محصول',
+                'type'=>'admin_shop'
+            ],
+            [
+                'name'=>'status_product_admin_shop',
+                'label'=>' وضعیت محصول',
+                'type'=>'admin_shop'
+            ],
+
+
+
+
         ];
         foreach ($Permissions as $Permission){
             Permission::updateOrCreate(

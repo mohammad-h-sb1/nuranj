@@ -31,4 +31,9 @@ class ShopCategory extends Model
     {
         return $this->hasMany(ShopCategory::class ,'parent_id','id');
     }
+
+    public function Products()
+    {
+        return $this->belongsToMany(Product::class,'product_shop_category',);
+    }
 }
