@@ -7,6 +7,8 @@ use App\Models\V2\CategoryShop;
 use App\Models\V2\Permission;
 use App\Models\V2\Role;
 use App\Models\V2\Shop;
+use App\Models\V2\ShopMeta;
+use App\V2\Models\ShopCategory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -40,7 +42,10 @@ class User extends Authenticatable
         'type',
         'mobile',
         'api_token',
-        'two_factory_type'
+        'two_factory_type',
+        'date_of_birth',
+        'national_code',
+        'national_code_img_url'
     ];
 
     /**
@@ -165,5 +170,15 @@ class User extends Authenticatable
     public function shops()
     {
         return $this->hasMany(Shop::class);
+    }
+
+    public function ShopMeta()
+    {
+        return $this->hasMany(ShopMeta::class);
+    }
+
+    public function ShopCategories()
+    {
+        return $this->hasMany(ShopCategory::class);
     }
 }

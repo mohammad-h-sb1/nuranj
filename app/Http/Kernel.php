@@ -5,6 +5,7 @@ namespace App\Http;
 use App\Http\Middleware\Admin;
 use App\Http\Middleware\Customer;
 use App\Http\Middleware\Manager;
+use App\Http\Middleware\ShopExpired_at;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -68,5 +69,6 @@ class Kernel extends HttpKernel
         'manager'=>Manager::class,
         'customer'=>Customer::class,
         'admin'=>Admin::class,
+        'expired_at'=>ShopExpired_at::class
     ];
 }

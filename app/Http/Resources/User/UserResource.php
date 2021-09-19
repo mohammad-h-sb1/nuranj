@@ -21,7 +21,10 @@ class UserResource extends JsonResource
             'type'=>$this->type,
             'api_token'=>$this->api_token,
             'two_factory_type'=>$this->two_factory_type,
-            'created_at'=>(string)$this->created_at
+            'created_at'=>(string)$this->created_at,
+            'date_of_birth'=>$this->date_of_birth,
+            'national_code'=>$this->national_code,
+            'national_code_img_url'=>$this->national_code_img_url
         ];
     }
 }

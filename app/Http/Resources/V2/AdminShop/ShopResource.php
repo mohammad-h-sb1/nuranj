@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Resources\V2\Front;
+namespace App\Http\Resources\V2\AdminShop;
 
-use App\Http\Resources\User\UserResource;
-use App\Http\Resources\V2\AdminShop\ShopMetaResource;
+use App\Models\V2\Shop;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ShopResource extends JsonResource
@@ -17,14 +16,18 @@ class ShopResource extends JsonResource
     public function toArray($request)
     {
         return[
-            'category'=>$this->categoryShop->name,
             'name'=>$this->name,
-            'province'=>$this->province_id,
+            'category'=>$this->categoryShop,
+            'province_id'=>$this->province_id,
             'city_id'=>$this->city_id,
             'url'=>$this->url,
             'phone'=>$this->phone,
             'description'=>$this->description,
-            'shopMeta'=>new ShopMetaResource($this->shopMeta)
+            'status'=>$this->status,
+            'expired_at'=>$this->expired_at,
+            'showMeta'=>new ShopMetaResource($this->ShopMeta)
         ];
+
+
     }
 }

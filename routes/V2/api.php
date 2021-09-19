@@ -8,7 +8,12 @@ use App\Http\Controllers\V2\Dashboard\Admin\CategoryShopController as DashboardA
 use App\Http\Controllers\V2\Dashboard\Admin\PermissionController as DashboardAdminPermission;
 use App\Http\Controllers\V2\Dashboard\Admin\PermissionUserController as DashboardAdminPermissionUser;
 use App\Http\Controllers\V2\Dashboard\Admin\RoleController as DashboardAdminRole;
+use App\Http\Controllers\V2\Dashboard\AdminShop\ShopCategoryController as DashboardAdminShopCategory;
+use App\Http\Controllers\V2\Dashboard\AdminShop\ShopController as DashboardAdminShop;
 use App\Http\Controllers\V2\Dashboard\AdminShop\ProfileController as DashboardAdminShopProfile;
+use App\Http\Controllers\V2\Dashboard\AdminShop\ShopMetaController as DashboardAdminShopMetaShop;
+use App\Http\Controllers\V2\Front\Front\ShopController;
+use App\Http\Controllers\V2\Dashboard\Admin\ShopController as DashboardAdminShops;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 
@@ -50,10 +55,49 @@ Route::middleware('auth:api')->group(function () {
                 Route::delete('/delete/{categoryShop}',[DashboardAdminCategoryShop::class,'destroy'])->middleware('can:delete-category-shop,user');
                 Route::post('/status/{id}',[DashboardAdminCategoryShop::class,'status'])->middleware('can:status-category-shop,user');
             });
-        });
 
+            //shop
+            Route::prefix('shop')->group(function (){
+                Route::get('/',[DashboardAdminShops::class,'index'])->middleware('can:index_shop,user');
+                Route::get('/show/{id}',[DashboardAdminShops::class,'show'])->middleware('can:show_shop,user');
+                Route::get('/edit/{id}',[DashboardAdminShops::class,'edit'])->middleware('can:edit_shop,user');
+                Route::put('/update/{id}',[DashboardAdminShops::class,'update'])->middleware('can:update_shop,user');
+                Route::post('/status/{id}',[DashboardAdminShops::class,'status'])->middleware('can:status_shop,user');
+            });
+
+        });
         //adminShop
         Route::prefix('admin/shop')->group(function (){
+            //create shop
+            Route::prefix('shop')->group(function (){
+                Route::get('/show/{shop}',[DashboardAdminShop::class,'show'])->middleware('can:show_shop_admin_shop,user');
+                Route::get('edit/{shop}',[DashboardAdminShop::class,'edit'])->middleware('can:edit_shop_admin_shop,user');
+                Route::put('update/{shop}',[DashboardAdminShop::class,'update'])->middleware('can:update_shop_admin_shop,user');
+                Route::post('post/national/code/shop/{shop}',[DashboardAdminShop::class,'postNationalCode'])->middleware('can:store_national_code_admin_shop,user');
+            });
+            //shop meta
+            Route::prefix('shop/meta')->group(function (){
+                Route::get('show/{shopMeta}',[DashboardAdminShopMetaShop::class,'show'])->middleware('can:show_shop_admin_shop,user');
+                Route::post('store',[DashboardAdminShopMetaShop::class,'store'])->middleware('can:edit_shop_admin_shop,user');
+                Route::get('edit/{shopMeta}',[DashboardAdminShopMetaShop::class,'edit'])->middleware('can:edit_shop_admin_shop,user');
+                Route::put('update/{shopMeta}',[DashboardAdminShopMetaShop::class,'update'])->middleware('can:edit_shop_admin_shop,user');
+                Route::post('logo/store/',[DashboardAdminShopMetaShop::class,'logo'])->middleware('can:edit_shop_admin_shop,user');
+                Route::post('favicon/store/',[DashboardAdminShopMetaShop::class,'Favicon'])->middleware('can:edit_shop_admin_shop,user');
+            });
+            // shop category قسمت دسته بندی های هر شاپ
+            Route::prefix('shop/category')->group(function (){
+                Route::get('/',[DashboardAdminShopCategory::class,'index'])->middleware('can:index_shop_category_admin_shop,user');
+                Route::post('/store',[DashboardAdminShopCategory::class,'store'])->middleware('can:store_shop_category_admin_shop,user');
+                Route::get('/show/{shopCategory}',[DashboardAdminShopCategory::class,'show'])->middleware('can:show_shop_category_admin_shop,user');
+                Route::get('/edit/{shopCategory}',[DashboardAdminShopCategory::class,'edit'])->middleware('can:edit_shop_category_admin_shop,user');
+                Route::put('/update/{shopCategory}',[DashboardAdminShopCategory::class,'update'])->middleware('can:update_shop_category_admin_shop,user');
+                Route::delete('/delete/{shopCategory}',[DashboardAdminShopCategory::class,'destroy'])->middleware('can:delete_shop_category_admin_shop,user');
+                Route::post('/status/{id}',[DashboardAdminShopCategory::class,'status'])->middleware('can:status_shop_category_admin_shop,user');
+                Route::post('/status/menu/{id}',[DashboardAdminShopCategory::class,'statusMenu'])->middleware('can:status_shop_category_admin_shop,user');
+            });
+
+
+
             //profile
             Route::prefix('profile')->group(function (){
                 Route::get('/',[DashboardAdminShopProfile::class,'index']);
@@ -74,10 +118,20 @@ Route::middleware('auth:api')->group(function () {
         });
     });
 
-
+    Route::prefix('front')->group(function (){
+        //shop
+        Route::prefix('shop')->middleware('expired_at')->group(function (){
+            Route::post('shop',[ShopController::class,'store'])->middleware('can:store-shop,user');
+        });
+    });
 
 
     Route::post('v2/logout',[AuthController::class,'logout']);
+
+});
+Route::prefix('shop')->group(function (){
+    Route::get('/',[ShopController::class,'index']);
+    Route::get('/show/{id}',[ShopController::class,'show'])->middleware('expired_at');
 });
 
 

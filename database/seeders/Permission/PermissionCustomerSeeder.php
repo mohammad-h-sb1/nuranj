@@ -21,6 +21,13 @@ class PermissionCustomerSeeder extends Seeder
                 'name'=>'show-profile',
                 'label'=>'مشاهد پروفایل',
                 'type'=>'customer'
+            ],
+
+            //crate shop
+            [
+                'name'=>'store-shop',
+                'label'=>'ایجاد_فروشگاه',
+                'type'=>'customer'
             ]
         ];
         foreach ($Permissions as $Permission){
@@ -30,9 +37,9 @@ class PermissionCustomerSeeder extends Seeder
             );
         }
         $Permissions=Permission::query()->whereType('customer')->get();
-        $user=User::query()->find(2);
+        $user=User::query()->whereType('customer')->first();
         $user->permissions()->sync($Permissions);
         $Role=Role::query()->whereType('customer')->first();
-        $Role->permissions()->sync($Role);
+        $Role->permissions()->sync($Permissions);
     }
 }

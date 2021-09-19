@@ -66,17 +66,10 @@ class CategoryShopController extends Controller
      */
     public function show(CategoryShop $categoryShop)
     {
-        if ($categoryShop->status == 1){
-            $status='فعال';
-        }
-        else{
-            $status='غیر فعال';
-        }
         return response()->json([
             'status'=>'ok',
             'data'=>[
                 'category_shop'=>new CategoryShopResource($categoryShop),
-                'status'=>$status
             ],
         ]);
     }
@@ -89,18 +82,12 @@ class CategoryShopController extends Controller
      */
     public function edit(CategoryShop $categoryShop)
     {
-        if ($categoryShop->status == 1){
-            $status='فعال';
-        }
-        else{
-            $status='غیر فعال';
-        }
+
         return response()->json([
             'status'=>'ok',
             'data'=>[
                 'category_shop'=>new CategoryShopResource($categoryShop),
-                'status'=>$status
-            ],
+                ],
         ]);
     }
 

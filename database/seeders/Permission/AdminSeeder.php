@@ -140,10 +140,37 @@ class AdminSeeder extends Seeder
                 'type'=>'admin'
             ] ,
 
-
-
-
-
+            //shop
+            [
+                'name'=>'index_shop',
+                'label'=>'مشاهده_فروشگاه ها',
+                'type'=>'admin'
+            ],
+            [
+                'name'=>'show_shop',
+                'label'=>'مشاهده_یک_فروشگاه',
+                'type'=>'admin'
+            ],
+            [
+                'name'=>'edit_shop',
+                'label'=>'ویرایش_فروشگاه',
+                'type'=>'admin'
+            ],
+            [
+                'name'=>'update_shop',
+                'label'=>'اپدیت_فروشگاه',
+                'type'=>'admin'
+            ],
+            [
+                'name'=>'delete_shop',
+                'label'=>'حذف_فروشگاه',
+                'type'=>'admin'
+            ],
+            [
+                'name'=>'status_shop',
+                'label'=>'وضعیت_یک_فروشگاه',
+                'type'=>'admin'
+            ]
         ];
         foreach ($Permissions as $Permission){
             Permission::updateOrCreate(
@@ -152,7 +179,7 @@ class AdminSeeder extends Seeder
             );
         }
         $Permissions=Permission::query()->whereType('admin')->get();
-        $user=\App\Models\User::find(1);
+        $user=\App\Models\User::query()->where('type','admin')->first();
         $user->permissions()->sync($Permissions);
         $role=Role::query()->whereType('admin')->first();
         $role->permissions()->sync($Permissions);
