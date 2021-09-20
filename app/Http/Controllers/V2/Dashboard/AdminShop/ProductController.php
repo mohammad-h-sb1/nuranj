@@ -3,9 +3,14 @@
 namespace App\Http\Controllers\V2\Dashboard\AdminShop;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\V2\AdminShop\ProductMetaResource;
 use App\Http\Resources\V2\AdminShop\ProductResource;
+use App\Models\User;
+use App\Models\V2\CategoryShop;
 use App\Models\V2\Product;
+use App\Models\V2\ProductMeta;
 use App\Models\V2\Shop;
+use App\Models\V2\ShopCategory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -46,7 +51,12 @@ class ProductController extends Controller
         $validData=$this->validate($request,[
             'name' => ['required','string','max:50'],
             'type' => ['required',],
-            'categories'=>['array'],
+            'categories'=>['array','nullable'],
+            'tickets'=>['array','nullable'],
+            'code' => ['string','max:15','min:11'],
+            'Price'=>['string'],
+            'existing'=>['string'],
+            'limitations'=>['string'],
         ]);
         $shop=Shop::query()->where('user_id',auth()->user()->id)->pluck('id')->first();
         $data=[
@@ -54,10 +64,15 @@ class ProductController extends Controller
             'shop_id'=>$shop,
             'name'=>$validData['name'],
             'type'=>$validData['type'],
-            'description'=>$request->description
+            'description'=>$request->description,
+            'code'=>$request->code,
+            'Price'=>$request->Price,
+            'existing'=>$request->existing,
+            'limitations'=>$request->limitations
         ];
         $product=Product::create($data);
         $product->Shopcategories()->sync($validData['categories']);
+        $product->TicketProducts()->sync($validData['tickets']);
         return response()->json([
             'status'=>'ok',
             'data'=>new ProductResource($product)
@@ -178,5 +193,65 @@ class ProductController extends Controller
                 'massage'=>'شما دسترسی ندارید'
             ],403);
         }
+    }
+
+    public function getStatus(Request $request)
+    {
+        $validData=$this->validate($request,[
+            'status' => 'nullable|boolean',
+            'existing'=>'nullable|boolean',
+            'type'=>'nullable',
+            'category'=>'nullable'
+        ]);
+        $product=Product::query()->whereIn('user_id',[auth()->user()->id])
+            ->when($request->input('status'),function ($query) use ($request){
+                return $query->where('status','=',$request->status);
+            })->when($request->input('existing'),function ($query) use ($request){
+                return $query->where('existing','>',0);
+            })->when($request->input('type'),function ($query) use ($request){
+                return $query->where('type','like','%'.$request->input('type'));
+            })
+            ->paginate(\request('limit'));
+        return response()->json([
+            'status'=>'ok',
+            'data'=>ProductResource::collection($product)
+        ]);
+    }
+
+    public function getCategory(Request $request)
+    {
+        $validData=$this->validate($request,[
+            'id' => 'required|',
+        ]);
+        $category=ShopCategory::query()->where('id',$request->input('id'))->first();
+        $product=$category->Products->paginate(\request('limit'));
+        return response()->json([
+            'status'=>'ok',
+            'date'=>ProductResource::collection($product)
+        ]);
+
+    }
+
+    public function getOrdering(Request $request)
+    {
+        $validData=$this->validate($request,[
+            'orderBy'=>'nullable|string'
+
+        ]);
+        $product=Product::query()->whereIn('user_id',[auth()->user()->id])
+            ->when($request->input('orderBy') =='by_date',function ($q) use ($request){
+               return $q->orderByDesc('created_at',);
+            })->when($request->input('orderBy')=='based_on_price',function ($q)use ($request){
+                return $q->orderByDesc('Price');
+            })->when($request->input('orderBy',)=='based_on_existing',function ($q) use ($request){
+                return $q->orderByDesc('existing');
+            })->when($request->input('orderBy',)=='unavailable',function ($q) use ($request){
+                return $q->where('existing',0);
+            })
+            ->paginate(\request('limit'));
+        return response()->json([
+            'status'=>'ok',
+            'data'=>ProductResource::collection($product)
+        ]);
     }
 }

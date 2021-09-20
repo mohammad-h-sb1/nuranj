@@ -189,6 +189,71 @@ class PermissionAdminShopSeeder extends Seeder
                 'type'=>'admin_shop'
             ],
 
+            //adminShop ProductMeta
+            [
+                'name'=>'index_product_meta_admin_shop',
+                'label'=>'دیدن همه ویژگی محصولات',
+                'type'=>'admin_shop'
+            ],
+            [
+                'name'=>'store_product_meta_admin_shop',
+                'label'=>'ایجاد ویژگی محصول',
+                'type'=>'admin_shop'
+            ],
+            [
+                'name'=>'show_product_meta_admin_shop',
+                'label'=>'دیدن ویژگی محصول',
+                'type'=>'admin_shop'
+            ],
+            [
+                'name'=>'edit_product_meta_admin_shop',
+                'label'=>'ویرایش ویژگی محصول',
+                'type'=>'admin_shop'
+            ],
+            [
+                'name'=>'update_product_meta_admin_shop',
+                'label'=>'اپدیت ویژگی  محصول',
+                'type'=>'admin_shop'
+            ],
+            [
+                'name'=>'delete_product_meta_admin_shop',
+                'label'=>'حذف ویژگی محصول',
+                'type'=>'admin_shop'
+            ],
+
+            //admin shop ticket
+            [
+                'name'=>'index_ticket_admin_shop',
+                'label'=>'دیدن همه تیکت های محصولات',
+                'type'=>'admin_shop'
+            ],
+            [
+                'name'=>'store_ticket_admin_shop',
+                'label'=>'ایجاد تیکت محصول',
+                'type'=>'admin_shop'
+            ],
+            [
+                'name'=>'show_ticket_admin_shop',
+                'label'=>'دیدن تیکت محصول',
+                'type'=>'admin_shop'
+            ],
+            [
+                'name'=>'edit_ticket_admin_shop',
+                'label'=>'ویرایش تیکت محصول',
+                'type'=>'admin_shop'
+            ],
+            [
+                'name'=>'update_ticket_admin_shop',
+                'label'=>'اپدیت  تیکت محصول',
+                'type'=>'admin_shop'
+            ],
+            [
+                'name'=>'delete_ticket_admin_shop',
+                'label'=>'حذف تیکت محصول',
+                'type'=>'admin_shop'
+            ],
+
+
 
 
 

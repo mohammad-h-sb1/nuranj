@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProductMetasTable extends Migration
+class CreateTicketProductsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,10 @@ class CreateProductMetasTable extends Migration
      */
     public function up()
     {
-        Schema::create('product_metas', function (Blueprint $table) {
+        Schema::create('ticket_products', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('product_id');
-            $table->string('color_name')->nullable();
-            $table->string('color_code')->nullable();
-            $table->string('key')->nullable();
-            $table->string('value')->nullable();
+            $table->unsignedBigInteger('shop_id');
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -31,6 +28,6 @@ class CreateProductMetasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_metas');
+        Schema::dropIfExists('ticket_products');
     }
 }

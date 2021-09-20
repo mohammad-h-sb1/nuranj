@@ -21,6 +21,10 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->boolean('status')->default(1);
             $table->text('description')->nullable();
+            $table->string('code')->nullable();
+            $table->bigInteger('Price')->nullable();
+            $table->integer('existing')->nullable();
+            $table->integer('limitations')->nullable();
             $table->timestamps();
         });
         Schema::create('product_shop_category', function (Blueprint $table) {

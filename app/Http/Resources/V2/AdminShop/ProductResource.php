@@ -19,7 +19,13 @@ class ProductResource extends JsonResource
             'type'=>$this->type,
             'description'=>$this->description,
             'categories'=>ShopCategoryResource::collection($this->Shopcategories),
-            'status'=>$this->status
+            'status'=>$this->status,
+            'code'=>$this->code,
+            'Price'=>$this->Price,
+            'existing'=>$this->existing,
+            'limitations'=>$this->limitations,
+            'productMeta'=>ProductMetaResource::collection($this->ProductMeta),
+            'ticket'=>TicketProductResource::collection($this->TicketProducts)
         ];
     }
 }

@@ -34,4 +34,9 @@ class Product extends Model
     {
         return $this->hasMany(ProductMeta::class);
     }
+
+    public function TicketProducts()
+    {
+        return $this->belongsToMany(TicketProduct::class,'product_ticket','product_id','ticket_product_id',);
+    }
 }

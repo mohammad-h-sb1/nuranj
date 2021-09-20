@@ -11,6 +11,7 @@ use App\Models\V2\Shop;
 use App\Models\V2\ShopCategory;
 use App\Models\V2\ShopMeta;
 use App\Models\V2\ShopSting;
+use App\Models\V2\TicketProduct;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -192,5 +193,10 @@ class User extends Authenticatable
     public function products()
     {
         return $this->hasMany(Product::class,'user_id','user_id');
+    }
+
+    public function TicketProducts()
+    {
+        return $this->belongsTo(TicketProduct::class);
     }
 }

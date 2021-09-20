@@ -9,6 +9,7 @@ use App\Http\Controllers\V2\Dashboard\Admin\PermissionController as DashboardAdm
 use App\Http\Controllers\V2\Dashboard\Admin\PermissionUserController as DashboardAdminPermissionUser;
 use App\Http\Controllers\V2\Dashboard\Admin\RoleController as DashboardAdminRole;
 use App\Http\Controllers\V2\Dashboard\AdminShop\ProductController as DashboardAdminShopProduct;
+use App\Http\Controllers\V2\Dashboard\AdminShop\ProductMetaController as DashboardAdminShopProductMeta;
 use App\Http\Controllers\V2\Dashboard\AdminShop\ShopCategoryController as DashboardAdminShopCategory;
 use App\Http\Controllers\V2\Dashboard\AdminShop\ShopController as DashboardAdminShop;
 use App\Http\Controllers\V2\Dashboard\AdminShop\ProfileController as DashboardAdminShopProfile;
@@ -17,6 +18,7 @@ use App\Http\Controllers\V2\Dashboard\Admin\ShopStingController as DashboardAdmi
 use App\Http\Controllers\V2\Dashboard\AdminShop\ShopStingController;
 use App\Http\Controllers\V2\Dashboard\AdminShop\ShopStingTypeController as DashboardAdminShopStingType;
 use \App\Http\Controllers\V2\Dashboard\AdminShop\ShopStingMetaValueController as DashboardAdminShopStingTypeMetaValue;
+use App\Http\Controllers\V2\Dashboard\AdminShop\TicketProductController as DashboardAdminShopTicketProduct;
 use App\Http\Controllers\V2\Front\Front\ShopController;
 use App\Http\Controllers\V2\Dashboard\Admin\ShopController as DashboardAdminShops;
 use Illuminate\Support\Facades\Gate;
@@ -142,10 +144,31 @@ Route::middleware('auth:api')->group(function () {
                 Route::put('/update/{id}',[DashboardAdminShopProduct::class,'update'])->middleware('can:update_product_admin_shop,user');
                 Route::delete('/delete/{id}',[DashboardAdminShopProduct::class,'destroy'])->middleware('can:delete_product_admin_shop,user');
                 Route::post('/status/{id}',[DashboardAdminShopProduct::class,'status'])->middleware('can:status_product_admin_shop,user');
+                //رئرت های مربوط به مرتب سازی ها
+                Route::get('status',[DashboardAdminShopProduct::class,'getStatus'])->middleware('can:index_product_admin_shop,user');
+                Route::get('category',[DashboardAdminShopProduct::class,'getCategory'])->middleware('can:index_product_admin_shop,user');
+                Route::get('ordering',[DashboardAdminShopProduct::class,'getOrdering'])->middleware('can:index_product_admin_shop,user');
             });
 
             //product meta
+            Route::prefix('product/meta')->group(function (){
+                Route::get('/',[DashboardAdminShopProductMeta::class,'index'])->middleware('can:index_product_meta_admin_shop,user');
+                Route::post('/store',[DashboardAdminShopProductMeta::class,'store'])->middleware('can:store_product_meta_admin_shop,user');
+                Route::get('/show/{productMeta}',[DashboardAdminShopProductMeta::class,'show'])->middleware('can:show_product_meta_admin_shop,user');
+                Route::get('/edit/{productMeta}',[DashboardAdminShopProductMeta::class,'edit'])->middleware('can:edit_product_meta_admin_shop,user');
+                Route::put('/update/{productMeta}',[DashboardAdminShopProductMeta::class,'update'])->middleware('can:update_product_meta_admin_shop,user');
+                Route::delete('/delete/{productMeta}',[DashboardAdminShopProductMeta::class,'destroy'])->middleware('can:delete_product_meta_admin_shop,user');
+            });
 
+            //product ticket
+            Route::prefix('product/ticket')->group(function (){
+                Route::get('/',[DashboardAdminShopTicketProduct::class,'index'])->middleware('can:index_ticket_admin_shop,user');
+                Route::post('/store',[DashboardAdminShopTicketProduct::class,'store'])->middleware('can:store_ticket_admin_shop,user');
+                Route::get('/show/{ticketProduct}',[DashboardAdminShopTicketProduct::class,'show'])->middleware('can:show_ticket_admin_shop,user');
+                Route::get('/edit/{ticketProduct}',[DashboardAdminShopTicketProduct::class,'edit'])->middleware('can:edit_ticket_admin_shop,user');
+                Route::put('/update/{ticketProduct}',[DashboardAdminShopTicketProduct::class,'update'])->middleware('can:update_ticket_admin_shop,user');
+                Route::delete('/delete/{ticketProduct}',[DashboardAdminShopTicketProduct::class,'destroy'])->middleware('can:delete_ticket_admin_shop,user');
+            });
 
 
             //profile
