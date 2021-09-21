@@ -25,7 +25,8 @@ class ProductResource extends JsonResource
             'existing'=>$this->existing,
             'limitations'=>$this->limitations,
             'productMeta'=>ProductMetaResource::collection($this->ProductMeta),
-            'ticket'=>TicketProductResource::collection($this->TicketProducts)
+            'ticket'=>TicketProductResource::collection($this->TicketProducts),
+            'file'=>FileResource::collection($this->files)
         ];
     }
 }

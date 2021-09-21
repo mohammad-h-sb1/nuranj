@@ -43,7 +43,7 @@ class ImageController extends Controller
     {
         $profile=Profile::query()->where('user_id',auth()->user()->id)->pluck('id')->first();
         $this->validate($request ,[
-            'image' => 'required|mimes:jpeg,bmp,png,|max:10240'
+            'image' => 'required|mimes:jpg,bmp,png,|max:10240'
         ]);
         $file=$request->file('image');
         $year=Carbon::now()->year;

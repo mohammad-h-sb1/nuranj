@@ -124,12 +124,12 @@ class ShopMetaController extends Controller
     public function logo(ShopMeta $shopMeta,Filesystem $filesystem,Request $request)
     {
         $this->validate($request ,[
-            'image' => 'required|file|mimes:jpeg,bmp,png,mp4,pdf|max:10240'
+            'image' => 'required|file|mimes:jpg,bmp,png,mp4,pdf|max:10240'
         ]);
         $shopMeta=ShopMeta::query()->where('user_id',\auth()->user()->id)->first();
         if ($shopMeta->user_id == auth()->user()->id){
             $this->validate($request ,[
-                'image' => 'required|file|mimes:jpeg,bmp,png,mp4,pdf|max:10240'
+                'image' => 'required|file|mimes:jpg,bmp,png,mp4,pdf|max:10240'
             ]);
             $file=$request->file('image');
             $year=Carbon::now()->year;
@@ -166,7 +166,7 @@ class ShopMetaController extends Controller
         $shopMeta=ShopMeta::query()->where('user_id',\auth()->user()->id)->first();
         if ($shopMeta->user_id == auth()->user()->id){
             $this->validate($request ,[
-                'image' => 'required|file|mimes:jpeg,bmp,png,mp4,pdf|max:10240'
+                'image' => 'required|file|mimes:jpg,bmp,png,mp4,pdf|max:10240'
             ]);
             $file=$request->file('image');
             $year=Carbon::now()->year;

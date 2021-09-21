@@ -2,6 +2,7 @@
 
 namespace App\Models\V2;
 
+use App\Model\V2\CartInformation;
 use App\Models\User;
 use App\Models\V2\ShopCategory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -56,5 +57,15 @@ class Shop extends Model
     public function TicketProducts()
     {
         return $this->hasMany(Product::class);
+    }
+
+    public function files()
+    {
+        return $this->hasMany(File::class);
+    }
+
+    public function CartInformation()
+    {
+        return $this->hasOne(CartInformation::class);
     }
 }

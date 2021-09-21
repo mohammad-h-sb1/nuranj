@@ -1,18 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\V1\Dashboard\User;
+namespace App\Http\Controllers\V2\Dashboard\AdminShop;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\User\ImageResource;
-use App\Http\Resources\User\TicketResource;
-use App\Models\Image;
-use App\Models\Ticket;
+use App\Http\Resources\V2\AdminShop\FileResource;
+use App\Http\Resources\V2\AdminShop\ProductResource;
+use App\Models\V2\File;
+use App\Models\V2\Product;
+use App\Models\V2\Shop;
 use Carbon\Carbon;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
-use PHPUnit\Util\Filesystem;
+use Illuminate\Support\Str;
 
-class TicketController extends Controller
+class FileController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,11 +22,7 @@ class TicketController extends Controller
      */
     public function index()
     {
-        $ticket=Ticket::query()->where('user_id',auth()->user()->id)->get();
-        return response()->json([
-            'status'=>'ok',
-            'data'=>TicketResource::collection($ticket)
-        ]);
+        //
     }
 
     /**
@@ -46,56 +43,51 @@ class TicketController extends Controller
      */
     public function store(Request $request,Filesystem $filesystem)
     {
-        $validData=$this->validate($request,[
-            'category' => 'required',
-            'description' => 'required',
-            'title' => 'required',
-            'image' => 'file|mimes:jpg,bmp,png,mp4,pdf|max:10240'
-
+        $this->validate($request ,[
+            'image' => 'required|file|mimes:jpeg,bmp,png,mp4,pdf|max:10240',
+            'product_id'=>'required'
         ]);
-
-        $data=[
-            'user_id'=>auth()->user()->id,
-            'title'=>$validData['title'],
-            'category'=>$validData['category'],
-            'description'=>$validData['description'],
-        ];
-        $ticket=Ticket::create($data);
         $file=$request->file('image');
         $year=Carbon::now()->year;
         $month=Carbon::now()->month;
         $day=Carbon::now()->day;
         $imagePath="/upload/image/{$year}/{$month}/{$day}";
-        $fileName=$file->getClientOriginalName();
-//        if ($filesystem->exists(public_path("{$imagePath}/{$fileName}"))){
-//            $fileName=Carbon::now()->timespan()."-{$fileName}";
-//        }
-        $file->move(public_path($imagePath) , $fileName);
+        $extension = pathinfo(storage_path('/uploads/my_image.jpg'), PATHINFO_EXTENSION);
+        $fileName=Str::random('11').".$extension";
+
+        if ($filesystem->exists(public_path("{$imagePath}/{$fileName}"))){
+            $fileName=Carbon::now()->timespan()."-{$fileName}";
+        }
+        $file->move(public_path($imagePath),$fileName);
+        $shop=Shop::query()->where('user_id',auth()->user()->id)->pluck('id')->first();
+        $product=Product::query()->where('id',$request->product_id)->first();
         $data=[
             'user_id'=>auth()->user()->id,
-            'ticket_id'=>$ticket->id,
-            'url'=>url("{$imagePath}/{$fileName}"),
-            'status'=>1
+            'shop_id'=>$shop,
+            'product_id'=>$request->input('product_id'),
+            'url'=>url("$imagePath/$fileName")
         ];
-        Image::create($data);
+
+        File::create($data);
         return response()->json([
             'status'=>'ok',
-            'data'=>new TicketResource($ticket)
+            'data'=>new ProductResource($product)
         ]);
     }
+
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Ticket  $ticket
+     * @param  \App\Models\File  $file
      * @return \Illuminate\Http\Response
      */
-    public function show(Ticket $ticket)
+    public function show(File $file)
     {
-        if (auth()->user()->id == $ticket->user_id){
+        if ($file->user_id == auth()->user()->id){
             return response()->json([
                 'status'=>'ok',
-                'data'=>new TicketResource($ticket)
+                'data'=>new FileResource($file)
             ]);
         }
         else{
@@ -104,16 +96,15 @@ class TicketController extends Controller
                 'massage'=>'شما دسترسی ندارید'
             ],403);
         }
-
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Ticket  $ticket
+     * @param  \App\Models\File  $file
      * @return \Illuminate\Http\Response
      */
-    public function edit(Ticket $ticket)
+    public function edit(File $file)
     {
         //
     }
@@ -122,10 +113,10 @@ class TicketController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Ticket  $ticket
+     * @param  \App\Models\File  $file
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Ticket $ticket)
+    public function update(Request $request, File $file)
     {
         //
     }
@@ -133,19 +124,21 @@ class TicketController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Ticket  $ticket
+     * @param  \App\Models\File  $file
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Ticket $ticket)
+    public function destroy(File $file)
     {
-        if (auth()->user()->id == $ticket->user_id){
-            $ticket->delete();
+        if ($file->user_id == auth()->user()->id){
+            $file->delete();
         }
         else{
             return response()->json([
                 'status'=>'Error',
                 'massage'=>'شما دسترسی ندارید'
             ],403);
+
         }
+
     }
 }

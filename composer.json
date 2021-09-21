@@ -10,6 +10,7 @@
         "ghasedak/php": "dev-master",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.54",
+        "laravel/scout": "^9.2",
         "laravel/socialite": "^5.2",
         "laravel/tinker": "^2.5"
     },

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\V2\Front\ShopResource;
 use App\Models\User;
 use App\Models\V2\Permission;
+use App\Models\V2\Product;
 use App\Models\V2\Role;
 use App\Models\V2\Shop;
 use Carbon\Carbon;
@@ -117,5 +118,11 @@ class ShopController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getShowProduct(Request $request)
+    {
+        $product=Product::query()->where('shop_id',$request->shop_id)->paginate(\request('limit'));
+        return response()->json();
     }
 }

@@ -39,4 +39,9 @@ class Product extends Model
     {
         return $this->belongsToMany(TicketProduct::class,'product_ticket','product_id','ticket_product_id',);
     }
+
+    public function files()
+    {
+        return $this->hasMany(File::class);
+    }
 }

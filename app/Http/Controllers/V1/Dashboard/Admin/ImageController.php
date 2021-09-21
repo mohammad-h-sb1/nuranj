@@ -48,7 +48,7 @@ class ImageController extends Controller
     public function store(Request $request,Filesystem $filesystem)
     {
         $this->validate($request ,[
-            'image' => 'required|file|mimes:jpeg,bmp,png,mp4,pdf|max:10240'
+            'image' => 'required|file|mimes:jpg,bmp,png,mp4,pdf|max:10240'
         ]);
         $file=$request->file('image');
         $year=Carbon::now()->year;

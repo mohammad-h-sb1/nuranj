@@ -253,6 +253,51 @@ class PermissionAdminShopSeeder extends Seeder
                 'type'=>'admin_shop'
             ],
 
+            //file
+            [
+                'name'=>'store_file_admin_shop',
+                'label'=>'ایجاد فایل',
+                'type'=>'admin_shop'
+            ],
+            [
+                'name'=>'show_file_admin_shop',
+                'label'=>'دیدن فایل',
+                'type'=>'admin_shop'
+            ],
+            [
+                'name'=>'edit_file_admin_shop',
+                'label'=>'ویرایش فایل',
+                'type'=>'admin_shop'
+            ],
+            [
+                'name'=>'update_file_admin_shop',
+                'label'=>'اپدیت  فایل',
+                'type'=>'admin_shop'
+            ],
+            [
+                'name'=>'delete_file_admin_shop',
+                'label'=>'حذف فایل',
+                'type'=>'admin_shop'
+            ],
+
+            //DashboardAdminShopCartInformation
+            [
+                'name'=>'store_cart_information_admin_shop',
+                'label'=>'ایجاداطلاعات سبدخرید',
+                'type'=>'admin_shop'
+            ],
+            [
+                'name'=>'show_cart_information_admin_shop',
+                'label'=>'دیدن اطلاعات سبدخرید',
+                'type'=>'admin_shop'
+            ],
+            [
+                'name'=>'update_cart_information_admin_shop',
+                'label'=>'اپدیت اطلاعات سبدخرید',
+                'type'=>'admin_shop'
+            ],
+
+
 
 
 

@@ -24,9 +24,14 @@ class ProductController extends Controller
     public function index()
     {
         $product=Product::query()->where('user_id',auth()->user()->id)->paginate(\request('limit'));
+        $count=Product::all();
+        $countProduct=count($count);
         return response()->json([
             'status'=>'ok',
-            'data'=>ProductResource::collection($product)
+            'data'=>[
+                'product'=>ProductResource::collection($product),
+                'countProduct'=>$countProduct
+            ],
         ]);
     }
 

@@ -137,14 +137,15 @@ class ShopController extends Controller
     {
         if ($shop->user_id == auth()->user()->id){
             $this->validate($request ,[
-                'image' => 'required|file|mimes:jpeg,bmp,png,mp4,pdf|max:10240'
+                'image' => 'required|file|mimes:jpg,bmp,png,mp4,pdf|max:10240'
             ]);
             $file=$request->file('image');
             $year=Carbon::now()->year;
             $month=Carbon::now()->month;
             $day=Carbon::now()->day;
             $imagePath="/upload/image/{$year}/{$month}/{$day}";
-            $fileName=Str::random('11').".{$file->getMimeType()}";
+            $extension = pathinfo(storage_path('/uploads/my_image.jpg'), PATHINFO_EXTENSION);
+            $fileName=Str::random('11').".$extension";
             if ($filesystem->exists(public_path("{$imagePath}/{$fileName}"))){
                 $fileName=Carbon::now()->timespan()."-{$fileName}";
             }

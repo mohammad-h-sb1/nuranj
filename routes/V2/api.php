@@ -8,6 +8,8 @@ use App\Http\Controllers\V2\Dashboard\Admin\CategoryShopController as DashboardA
 use App\Http\Controllers\V2\Dashboard\Admin\PermissionController as DashboardAdminPermission;
 use App\Http\Controllers\V2\Dashboard\Admin\PermissionUserController as DashboardAdminPermissionUser;
 use App\Http\Controllers\V2\Dashboard\Admin\RoleController as DashboardAdminRole;
+use App\Http\Controllers\V2\Dashboard\AdminShop\CartInformationController as DashboardAdminShopCartInformation;
+use App\Http\Controllers\V2\Dashboard\AdminShop\FileController as DashboardAminShopFile;
 use App\Http\Controllers\V2\Dashboard\AdminShop\ProductController as DashboardAdminShopProduct;
 use App\Http\Controllers\V2\Dashboard\AdminShop\ProductMetaController as DashboardAdminShopProductMeta;
 use App\Http\Controllers\V2\Dashboard\AdminShop\ShopCategoryController as DashboardAdminShopCategory;
@@ -82,6 +84,8 @@ Route::middleware('auth:api')->group(function () {
             });
 
         });
+
+
         //adminShop
         Route::prefix('admin/shop')->group(function (){
             //create shop
@@ -134,7 +138,6 @@ Route::middleware('auth:api')->group(function () {
                 Route::put('/update/{shopStingMetaValue}',[DashboardAdminShopStingTypeMetaValue::class,'update'])->middleware('can:update_shop_sting_type_meta_value_admin_shop,user');
                 Route::delete('/delete/{shopStingMetaValue}',[DashboardAdminShopStingTypeMetaValue::class,'destroy'])->middleware('can:delete_shop_sting_type_meta_value_admin_shop,user');
             });
-
             //product
             Route::prefix('product')->group(function (){
                 Route::get('/',[DashboardAdminShopProduct::class,'index'])->middleware('can:index_product_admin_shop,user');
@@ -149,7 +152,6 @@ Route::middleware('auth:api')->group(function () {
                 Route::get('category',[DashboardAdminShopProduct::class,'getCategory'])->middleware('can:index_product_admin_shop,user');
                 Route::get('ordering',[DashboardAdminShopProduct::class,'getOrdering'])->middleware('can:index_product_admin_shop,user');
             });
-
             //product meta
             Route::prefix('product/meta')->group(function (){
                 Route::get('/',[DashboardAdminShopProductMeta::class,'index'])->middleware('can:index_product_meta_admin_shop,user');
@@ -159,7 +161,6 @@ Route::middleware('auth:api')->group(function () {
                 Route::put('/update/{productMeta}',[DashboardAdminShopProductMeta::class,'update'])->middleware('can:update_product_meta_admin_shop,user');
                 Route::delete('/delete/{productMeta}',[DashboardAdminShopProductMeta::class,'destroy'])->middleware('can:delete_product_meta_admin_shop,user');
             });
-
             //product ticket
             Route::prefix('product/ticket')->group(function (){
                 Route::get('/',[DashboardAdminShopTicketProduct::class,'index'])->middleware('can:index_ticket_admin_shop,user');
@@ -169,8 +170,19 @@ Route::middleware('auth:api')->group(function () {
                 Route::put('/update/{ticketProduct}',[DashboardAdminShopTicketProduct::class,'update'])->middleware('can:update_ticket_admin_shop,user');
                 Route::delete('/delete/{ticketProduct}',[DashboardAdminShopTicketProduct::class,'destroy'])->middleware('can:delete_ticket_admin_shop,user');
             });
+            //file
+            Route::prefix('file')->group(function (){
+                Route::post('/store',[DashboardAminShopFile::class,'store'])->middleware('can:store_file_admin_shop,user');
+                Route::post('/show/{file}',[DashboardAminShopFile::class,'show'])->middleware('can:show_file_admin_shop,user');
 
+            });
 
+            //Shopping Cart Information
+            Route::prefix('cart/information')->group(function (){
+                Route::post('store',[DashboardAdminShopCartInformation::class,'store'])->middleware('can:store_cart_information_admin_shop,user');
+                Route::get('show/{cartInformation}',[DashboardAdminShopCartInformation::class,'show'])->middleware('can:show_cart_information_admin_shop,user');
+                Route::put('update/{cartInformation}',[DashboardAdminShopCartInformation::class,'update'])->middleware('can:update_cart_information_admin_shop,user');
+            });
             //profile
             Route::prefix('profile')->group(function (){
                 Route::get('/',[DashboardAdminShopProfile::class,'index']);
@@ -202,11 +214,13 @@ Route::middleware('auth:api')->group(function () {
     Route::post('v2/logout',[AuthController::class,'logout']);
 
 });
+
+
 Route::prefix('shop')->group(function (){
     Route::get('/',[ShopController::class,'index']);
     Route::get('/show/{id}',[ShopController::class,'show'])->middleware('expired_at');
+    Route::get('product',[ShopController::class,'getShowProduct']);
 });
-
 
 
 Route::get('auth/google',[AuthGoogleController::class,'redirect'])->middleware('web');

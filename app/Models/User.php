@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Model\V2\CartInformation;
 use App\Models\V2\ActiveCode;
 use App\Models\V2\CategoryShop;
+use App\Models\V2\File;
 use App\Models\V2\Permission;
 use App\Models\V2\Product;
 use App\Models\V2\Role;
@@ -198,5 +200,15 @@ class User extends Authenticatable
     public function TicketProducts()
     {
         return $this->belongsTo(TicketProduct::class);
+    }
+
+    public function files()
+    {
+        return $this->hasMany(File::class);
+    }
+
+    public function CartInformation()
+    {
+        return $this->hasOne(CartInformation::class);
     }
 }
